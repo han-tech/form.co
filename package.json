@@ -23,7 +23,7 @@
   "license": "MIT",
   "scripts": {
     "build": "gatsby build",
-    "develop": "gatsby develop",
+    "deploy": "npm run build && netlify deploy",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "lint": "eslint **/*.{js,jsx} --quiet",
     "test": "echo \"Error: no test specified\" && exit 1"
