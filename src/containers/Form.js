@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Poll from '../components/Poll/index';
+import Form from '../components/Form/index';
 
-class PollContainer extends Component {
+class FormContainer extends Component {
   static contextTypes = {
     firebase: PropTypes.object,
   };
@@ -25,11 +25,11 @@ class PollContainer extends Component {
     hasVoted: false,
   };
 
-  // pull the pollId from the route param, then fetch the poll
+  // pull the formId from the route param, then fetch the form
   componentDidMount() {
     const { history, match, uid } = this.props;
 
-    if (match.params.pollId.length === 6) {
+    if (match.params.formId.length === 6) {
       if (uid) {
         this.checkVote(uid);
       }
@@ -38,7 +38,7 @@ class PollContainer extends Component {
         loading: true,
       });
 
-      this.poll
+      this.form
         .get()
         .then(doc => {
           if (doc.exists) {
@@ -91,16 +91,16 @@ class PollContainer extends Component {
     }
   }
 
-  get poll() {
+  get form() {
     const { firebase } = this.context;
     const { match } = this.props;
 
-    return firebase.polls.doc(match.params.pollId);
+    return firebase.forms.doc(match.params.formId);
   }
 
   get results() {
-    // get the results sub-collection on the poll document
-    return this.poll.collection('results');
+    // get the results sub-collection on the form document
+    return this.form.collection('results');
   }
 
   handleSelectOption = id => {
@@ -218,7 +218,7 @@ class PollContainer extends Component {
 
   render() {
     return (
-      <Poll
+      <Form
         {...this.state}
         onSelectOption={this.handleSelectOption}
         onVote={this.handleVote}
@@ -227,4 +227,4 @@ class PollContainer extends Component {
   }
 }
 
-export default PollContainer;
+export default FormContainer;

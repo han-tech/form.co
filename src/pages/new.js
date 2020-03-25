@@ -6,7 +6,7 @@ import shortId from 'short-id';
 
 import { Button } from '../styledComponents/theme';
 import { Heading2 } from '../styledComponents/typography';
-import NewPoll from '../components/NewPoll/index';
+import NewForm from '../components/NewForm/index';
 
 const CreateButton = Button.extend`
   background-image: linear-gradient(19deg, #21d4fd 0%, #b721ff 100%);
@@ -34,7 +34,7 @@ const TitleInput = styled.input`
   font-size: 18px;
 `;
 
-class NewPollPage extends Component {
+class NewFormPage extends Component {
   static contextTypes = {
     firebase: PropTypes.object,
   };
@@ -159,7 +159,7 @@ class NewPollPage extends Component {
   };
 
   handleCreate = () => {
-    const pollId = shortId.generate();
+    const formId = shortId.generate();
     const { signIn, uid } = this.props;
 
     this.setState({
@@ -169,23 +169,23 @@ class NewPollPage extends Component {
     if (!uid) {
       // due to our database rules, we can't write unless a uid exists
       signIn('anonymous').then(() => {
-        this.createPoll(pollId);
+        this.createForm(formId);
       });
     } else {
-      this.createPoll(pollId);
+      this.createForm(formId);
     }
   };
 
-  createPoll(pollId) {
+  createForm(formId) {
     const { firebase } = this.context;
     const { options, title } = this.state;
     const { history } = this.props;
 
-    firebase.polls
-      .doc(pollId)
+    firebase.forms
+      .doc(formId)
       .set({
         title,
-        id: pollId,
+        id: formId,
         options: options.map(({ text, id }) => ({ text, optionId: id })),
       })
       .then(() => {
@@ -195,7 +195,7 @@ class NewPollPage extends Component {
           title: '',
         });
 
-        history.push(`/poll/${pollId}`);
+        history.push(`/form/${formId}`);
       })
       .catch(error => {
         // eslint-disable-next-line no-console
@@ -211,16 +211,16 @@ class NewPollPage extends Component {
 
     return (
       <div>
-        <Heading2>Create a new Poll</Heading2>
+        <Heading2>Create a new Form</Heading2>
         <TitleContainer>
-          <TitleLabel htmlFor="newPollTitle">Title</TitleLabel>
+          <TitleLabel htmlFor="newFormTitle">Title</TitleLabel>
           <TitleInput
-            id="newPollTitle"
+            id="newFormTitle"
             value={title}
             onChange={this.handleTitleChange}
           />
         </TitleContainer>
-        <NewPoll
+        <NewForm
           options={options}
           onToggleEdit={this.handleToggleEdit}
           onTextChange={this.handleTextChange}
@@ -246,4 +246,4 @@ class NewPollPage extends Component {
   }
 }
 
-export default NewPollPage;
+export default NewFormPage;

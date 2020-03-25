@@ -2,20 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 
-import Poll from '../../containers/Poll';
+import Form from '../../containers/Form';
 
-const PollPage = ({ uid, signIn }) => {
+const FormPage = ({ uid, signIn }) => {
   return (
     <Route
       render={({ location }) => {
         return (
           <div>
-            <Route exact path="/poll/" render={() => <Redirect to="/" />} />
+            <Route exact path="/form/" render={() => <Redirect to="/" />} />
             <Route
               location={location}
               key={location.key}
-              path="/poll/:pollId/"
-              render={props => <Poll {...props} uid={uid} signIn={signIn} />}
+              path="/form/:formId/"
+              render={props => <Form {...props} uid={uid} signIn={signIn} />}
             />
           </div>
         );
@@ -24,9 +24,9 @@ const PollPage = ({ uid, signIn }) => {
   );
 };
 
-PollPage.propTypes = {
+FormPage.propTypes = {
   uid: PropTypes.string,
   signIn: PropTypes.func.isRequired,
 };
 
-export default PollPage;
+export default FormPage;

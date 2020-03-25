@@ -18,8 +18,8 @@ class Firebase {
     this.auth = firebase.auth;
   }
 
-  get polls() {
-    return this.store().collection('polls');
+  get forms() {
+    return this.store().collection('forms');
   }
 }
 

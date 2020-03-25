@@ -79,11 +79,11 @@ const SortableList = SortableContainer(({ options, ...props }) => {
   );
 });
 
-const NewPoll = props => (
+const NewForm = props => (
   <SortableList {...props} lockAxis="y" useDragHandle lockToContainerEdges />
 );
 
-NewPoll.propTypes = {
+NewForm.propTypes = {
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
   onToggleEdit: PropTypes.func.isRequired,
   onTextChange: PropTypes.func.isRequired,
@@ -92,4 +92,4 @@ NewPoll.propTypes = {
   onDelete: PropTypes.func.isRequired,
 };
 
-export default NewPoll;
+export default NewForm;

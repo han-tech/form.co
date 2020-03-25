@@ -23,9 +23,9 @@ const TemplateWrapper = ({ children, data, ...props }) => (
             meta={[
               {
                 name: 'description',
-                content: 'Create polls for stuff and things',
+                content: 'Create forms for stuff and things',
               },
-              { name: 'keywords', content: 'polling, rating' },
+              { name: 'keywords', content: 'forming, rating' },
               { name: 'msapplication-TileColor', content: '#08AEEA' },
               { name: 'theme-color', content: '#2AF598' },
             ]}>

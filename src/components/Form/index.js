@@ -86,7 +86,7 @@ const ButtonContainer = styled.div`
   min-height: 36px;
 `;
 
-const Poll = ({
+const Form = ({
   loading,
   options,
   title,
@@ -140,7 +140,7 @@ const Poll = ({
   );
 };
 
-Poll.propTypes = {
+Form.propTypes = {
   loading: PropTypes.bool.isRequired,
   options: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
@@ -150,4 +150,4 @@ Poll.propTypes = {
   onVote: PropTypes.func.isRequired,
 };
 
-export default Poll;
+export default Form;

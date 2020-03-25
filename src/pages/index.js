@@ -6,7 +6,7 @@ import { Heading2 } from '../styledComponents/typography';
 
 const IndexPage = () => (
   <div>
-    <Heading2>A next-generation polling application</Heading2>
+    <Heading2>A next-generation forming application</Heading2>
     <p>
       Built from the ground up - Ut pariatur velit eu fugiat ut. Veniam commodo
       non esse proident ut anim irure voluptate commodo aliqua tempor Lorem
@@ -16,7 +16,7 @@ const IndexPage = () => (
       Consectetur culpa tempor dolore amet officia dolore nulla nisi sunt ea.
     </p>
     <Link to="/new">
-      <Button>New Poll</Button>
+      <Button>New Form</Button>
     </Link>
   </div>
 );
