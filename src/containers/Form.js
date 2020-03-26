@@ -17,9 +17,9 @@ class FormContainer extends Component {
 
   state = {
     title: '',
-    // options is a map with the optionId as the keys and
-    // option data including results as the values
-    options: {},
+    // fields is a map with the fieldId as the keys and
+    // field data including results as the values
+    fields: {},
     loading: false,
     selection: '',
     hasVoted: false,
@@ -42,15 +42,15 @@ class FormContainer extends Component {
         .get()
         .then(doc => {
           if (doc.exists) {
-            const { title, options } = doc.data();
+            const { title, fields } = doc.data();
 
             this.setState({
               loading: false,
               title,
-              options: options.reduce((aggr, curr) => {
+              fields: fields.reduce((aggr, curr) => {
                 return {
                   ...aggr,
-                  [curr.optionId]: {
+                  [curr.fieldId]: {
                     ...curr,
                     votes: 0,
                   },
@@ -121,7 +121,7 @@ class FormContainer extends Component {
       this.results
         .doc(uid)
         .set({
-          optionId: selection,
+          fieldsId: selection,
           uid,
         })
         .then(() => {
@@ -159,10 +159,10 @@ class FormContainer extends Component {
       .get()
       .then(resultDoc => {
         if (resultDoc.exists) {
-          const { optionId } = resultDoc.data();
+          const { fieldsId } = resultDoc.data();
 
           this.setState({
-            selection: optionId,
+            selection: fieldsId,
             hasVoted: true,
           });
 
@@ -184,17 +184,17 @@ class FormContainer extends Component {
     this.stopResultListener = this.results.onSnapshot(
       snapshot => {
         snapshot.docChanges().forEach(change => {
-          const { optionId } = change.doc.data();
+          const { fieldId } = change.doc.data();
 
           if (change.type === 'added') {
             this.setState(prevState => {
               return {
                 ...prevState,
-                options: {
-                  ...prevState.options,
-                  [optionId]: {
-                    ...prevState.options[optionId],
-                    votes: prevState.options[optionId].votes + 1,
+                fields: {
+                  ...prevState.fields,
+                  [fieldId]: {
+                    ...prevState.fields[fieldId],
+                    votes: prevState.fields[fieldId].votes + 1,
                   },
                 },
               };
@@ -220,7 +220,7 @@ class FormContainer extends Component {
     return (
       <Form
         {...this.state}
-        onSelectOption={this.handleSelectOption}
+        onSelectField={this.handleSelectField}
         onVote={this.handleVote}
       />
     );

@@ -47,7 +47,7 @@ class NewFormPage extends Component {
 
   state = {
     title: '',
-    options: [],
+    fields: [],
     loading: false,
   };
 
@@ -61,31 +61,31 @@ class NewFormPage extends Component {
 
   handleToggleEdit = id => {
     this.setState(prevState => {
-      const options = prevState.options
+      const fields = prevState.fields
         .filter(({ text }) => text)
-        .map(option => {
-          if (option.id === id) {
-            if (!option.editing) {
+        .map(field => {
+          if (field.id === id) {
+            if (!field.editing) {
               this.editing = id;
             } else {
               this.editing = null;
             }
 
             return {
-              ...option,
-              editing: !option.editing,
+              ...field,
+              editing: !field.editing,
             };
           }
 
           return {
-            ...option,
+            ...field,
             editing: false,
           };
         });
 
       return {
         ...prevState,
-        options,
+        fields,
       };
     });
   };
@@ -99,38 +99,38 @@ class NewFormPage extends Component {
   };
 
   handleTextChange = (e, id) => {
-    const options = this.state.options.map(option => {
-      if (option.id === id) {
+    const fields = this.state.fields.map(field => {
+      if (field.id === id) {
         return {
-          ...option,
+          ...field,
           text: e.target.value,
         };
       }
 
-      return option;
+      return field;
     });
 
     this.setState({
       ...this.state,
-      options,
+      fields,
     });
   };
 
   handleSortEnd = ({ oldIndex, newIndex }) => {
     this.setState({
       ...this.state,
-      options: arrayMove(this.state.options, oldIndex, newIndex),
+      fields: arrayMove(this.state.fields, oldIndex, newIndex),
     });
   };
 
   handleAddItem = () => {
     // if the user spams add w/o writing any text the items w/o any text get removed
-    const options = this.state.options
+    const fields = this.state.fields
       // filter out any falsy values from the list
       .filter(Boolean)
       .filter(({ text }) => !!text.trim())
-      .map(option => ({
-        ...option,
+      .map(field => ({
+        ...field,
         editing: false,
       }));
     const id = shortId.generate();
@@ -138,8 +138,8 @@ class NewFormPage extends Component {
 
     this.setState({
       ...this.state,
-      options: [
-        ...options,
+      fields: [
+        ...fields,
         {
           id,
           text: '',
@@ -150,11 +150,11 @@ class NewFormPage extends Component {
   };
 
   handleDelete = id => {
-    const options = this.state.options.filter(option => option.id !== id);
+    const fields = this.state.fields.filter(field => field.id !== id);
 
     this.setState({
       ...this.state,
-      options,
+      fields,
     });
   };
 
@@ -178,7 +178,7 @@ class NewFormPage extends Component {
 
   createForm(formId) {
     const { firebase } = this.context;
-    const { options, title } = this.state;
+    const { fields, title } = this.state;
     const { history } = this.props;
 
     firebase.forms
@@ -186,11 +186,11 @@ class NewFormPage extends Component {
       .set({
         title,
         id: formId,
-        options: options.map(({ text, id }) => ({ text, optionId: id })),
+        fields: fields.map(({ text, id }) => ({ text, fieldId: id })),
       })
       .then(() => {
         this.setState({
-          options: [],
+          fields: [],
           loading: false,
           title: '',
         });
@@ -205,9 +205,9 @@ class NewFormPage extends Component {
   }
 
   render() {
-    const { options, loading, title } = this.state;
-    const optionsWithText = options.filter(({ text }) => !!text.trim());
-    const disableCreate = !title || optionsWithText.length < 2 || loading;
+    const { fields, loading, title } = this.state;
+    const fieldsWithText = fields.filter(({ text }) => !!text.trim());
+    const disableCreate = !title || fieldsWithText.length < 2 || loading;
 
     return (
       <div>
@@ -221,7 +221,7 @@ class NewFormPage extends Component {
           />
         </TitleContainer>
         <NewForm
-          options={options}
+          fields={fields}
           onToggleEdit={this.handleToggleEdit}
           onTextChange={this.handleTextChange}
           onKeyDown={this.handleKeydown}

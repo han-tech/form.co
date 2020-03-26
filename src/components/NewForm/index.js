@@ -7,13 +7,13 @@ import {
   SortableHandle,
 } from 'react-sortable-hoc';
 
-const OptionsContainer = styled.ul`
+const FieldsContainer = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0 0 30px;
 `;
 
-const OptionItemContainer = styled.li`
+const FieldItemContainer = styled.li`
   border-bottom: 1px solid #ddd;
   padding: 10px 60px 10px 20px;
   margin: 0 0 10px;
@@ -23,7 +23,7 @@ const OptionItemContainer = styled.li`
   min-height: 36px;
 `;
 
-const OptionInputItem = styled.input`
+const FieldInputItem = styled.input`
   border: none;
   background-color: inherit;
   width: 100%;
@@ -41,12 +41,12 @@ const DragHandle = SortableHandle(() => <ActionItem>:::</ActionItem>);
 
 const SortableItem = SortableElement(
   ({ text, id, onToggleEdit, onKeyDown, onTextChange, onDelete, editing }) => (
-    <OptionItemContainer
+    <FieldItemContainer
       key={id}
       onDoubleClick={() => !editing && onToggleEdit(id)}
       onBlur={() => onToggleEdit(id)}>
       {editing ? (
-        <OptionInputItem
+        <FieldInputItem
           autoFocus
           value={text}
           onChange={e => onTextChange(e, id)}
@@ -63,19 +63,19 @@ const SortableItem = SortableElement(
         x
       </ActionItem>
       <DragHandle />
-    </OptionItemContainer>
+    </FieldItemContainer>
   ),
 );
 
-const SortableList = SortableContainer(({ options, ...props }) => {
+const SortableList = SortableContainer(({ fields, ...props }) => {
   return (
-    <OptionsContainer>
-      {options.filter(Boolean).map((option, index) => {
+    <FieldsContainer>
+      {fields.filter(Boolean).map((field, index) => {
         return (
-          <SortableItem {...option} {...props} index={index} key={option.id} />
+          <SortableItem {...field} {...props} index={index} key={field.id} />
         );
       })}
-    </OptionsContainer>
+    </FieldsContainer>
   );
 });
 
@@ -84,7 +84,7 @@ const NewForm = props => (
 );
 
 NewForm.propTypes = {
-  options: PropTypes.arrayOf(PropTypes.object).isRequired,
+  fields: PropTypes.arrayOf(PropTypes.object).isRequired,
   onToggleEdit: PropTypes.func.isRequired,
   onTextChange: PropTypes.func.isRequired,
   onKeyDown: PropTypes.func.isRequired,
